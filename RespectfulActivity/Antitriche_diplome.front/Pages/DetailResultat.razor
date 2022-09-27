@@ -1,0 +1,339 @@
+﻿@page "/resultat/{Id:int}"
+@using Microsoft.AspNetCore.Mvc.Formatters
+
+@inject IResultatService resultatService;
+@inject IRegleService regleService;
+<div class="titre">
+    <h1>Détail du résultat @resultat.Test de : @resultat.NomEleve @resultat.PrenomEleve</h1>
+</div>
+
+<div class="row">
+
+    <h2>Web actions</h2>
+    <div class="web-actions">
+        <Table DataSource="@resultatGroupWebServices" TItem="GroupementResultatWebService" OnExpand="OnRowExpandWeb" >
+            <RowTemplate>
+                @{
+                    if (context.Titre != null)
+                    {
+                        var premierResulat = resultat.ResultatWebs.Where(r => r.Titre.Contains(context.Titre)).FirstOrDefault();
+                        var webRegles = regleService.getReglesWebActives().Result;
+                        if (webRegles.Count > 0)
+                        {
+                            style = "";
+                            foreach (Regle regle in webRegles)
+                            {
+                                if (AnalyseService.IsMatching(premierResulat.Titre, regle.Paterne))
+                                {
+                                    if (regle.UtilisationRegle == EnumUtilisationRegle.Autorise)
+                                    {
+                                        style = "background-color: green; color: white;";
+                                        break;
+                                    }
+                                    else if (regle.UtilisationRegle == EnumUtilisationRegle.Interdit)
+                                    {
+                                        style = "background-color: red; color: white;";
+                                        break;
+                                    }
+                                }
+                            }
+                            if (style == "")
+                                style = "background-color: white";
+                        }
+                    }
+
+
+                }
+                <PropertyColumn Property="c => c.Titre" Style="@style"
+                                Sortable
+                                Filterable 
+                                Class="grand"/>
+                <PropertyColumn Property="c => c.DureeTotal"
+                                Sortable
+                                Filterable
+                                Class="grand"
+                                />
+
+            </RowTemplate>
+            <ExpandTemplate Context="rowData">
+                <Table DataSource="rowData.Data.ResultatWebs" Loading="rowData.Data.ResultatWebs == null" HidePagination ScrollX="1500" ScrollBarWidth="5px" PageSize="rowData.Data.ResultatWebs.Count" Class="expand">
+                    <PropertyColumn Property="r => r.Id"
+                                    Sortable
+                                    Filterable/>
+
+                    <PropertyColumn Property="r => r.Url"
+
+                                    SorterCompare="@((a, b) => string.Compare(a, b))"
+                                    SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending }"
+                                    Filterable/>
+
+                    <PropertyColumn Property="c => c.Titre"
+                                    SorterCompare="@((a, b) => string.Compare(a, b))"
+                                    SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending }"
+                                    Filterable/>
+
+                    <PropertyColumn Property="c => c.TimeStamp"
+                                    Format="yyyy/MM/dd hh:mm:ss"
+                                    Sortable
+                                    Filterable/>
+
+                    <PropertyColumn Property="c => c.Duration"
+                                    Sortable
+                                    Filterable/>
+                </Table>
+            </ExpandTemplate>
+        </Table>
+    </div>
+    <div class="window-actions">
+        <h2>Application actions</h2>
+        <Table DataSource="@resultatGroupWindowServices" TItem="GroupementResultatWindowService" OnExpand="OnRowExpandWindow">
+            <RowTemplate >
+                @{
+                    if (context.App != null)
+                    {
+                        var regletestee = resultat.ResultatWindows.Where(r => r.App.Contains(context.App)).FirstOrDefault();
+                        var windowRegles = regleService.getReglesWindowActives().Result;
+                        if (windowRegles.Count > 0)
+                        {
+                            style = "";
+                            foreach (Regle regle in windowRegles)
+                            {
+                                if (AnalyseService.IsMatching(regletestee.App, regle.Paterne))
+                                {
+                                    if (regle.UtilisationRegle == EnumUtilisationRegle.Autorise)
+                                    {
+                                        style = "background-color: green; color: white;";
+                                        break;
+                                    }
+                                    else if (regle.UtilisationRegle == EnumUtilisationRegle.Interdit)
+                                    {
+                                        style = "background-color: red; color: white;";
+                                        break;
+                                    }
+                                }
+                            }
+                            if (style == "")
+                                style = "background-color: white";
+                        }
+                    }
+
+
+                }
+                <PropertyColumn Property="c => c.App" Style="@style" Class="grand"/>
+                <PropertyColumn Property="c => c.DureeTotal" Class="grand"/>
+
+            </RowTemplate>
+            <ExpandTemplate Context="rowData" >
+                <Table DataSource="rowData.Data.ResultatWindows" Loading="rowData.Data.ResultatWindows == null" ScrollY="300" ScrollX="1000" ScrollBarWidth="5px" PageSize="rowData.Data.ResultatWindows.Count"  Class="expand">
+                    <PropertyColumn Property="r => r.Id"
+                                    Sortable
+                                    Filterable 
+                                    Class="grand"/>
+
+                    <PropertyColumn Property="r => r.App"
+
+                                    SorterCompare="@((a, b) => string.Compare(a, b))"
+                                    SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending }"
+                                    Filterable
+                                    Class="grand"/>
+
+                    <PropertyColumn Property="c => c.Titre"
+                                    SorterCompare="@((a, b) => string.Compare(a, b))"
+                                    SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending }"
+                                    Filterable/>
+
+                    <PropertyColumn Property="c => c.TimeStamp"
+                                    Format="yyyy/MM/dd hh:mm:ss"
+                                    Sortable
+                                    Filterable/>
+
+                    <PropertyColumn Property="c => c.Duration"
+                                    Sortable
+                                    Filterable/>
+                </Table>
+            </ExpandTemplate>
+        </Table>
+    </div>
+
+</div>
+<style>
+    .web-actions {
+        width: 100%;
+        float: left;
+        border-bottom: solid 3px blue ;
+    }
+    .window-actions {
+        width: 100%;
+        float: left;
+    }
+    .titre {
+        width: 100%;
+        float: left;
+        border-bottom: 1px solid blue;
+        
+    }
+    .titre h1 {
+        text-align: center;
+        font-size: 2em;
+        font-weight: bold;
+        color: dodgerblue;
+    }
+    h2{
+        text-decoration-line: revert;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    td {
+        width: 10%;
+        border: gray solid 1px;
+    }
+    td.grand {
+        width: 45%;
+    }
+    td.petit{
+        width: 10%;
+    }
+    .expand {
+        width: 100%;
+        float: left;
+        background: #d9d9d9;
+    }
+</style>
+
+@code {
+
+    private string style;
+
+
+    private Resultat resultat;
+
+    private List<List<ResultatWeb>> resultatGroupWebs;
+    private List<GroupementResultatWebService> resultatGroupWebServices;
+
+    private List<List<ResultatWindow>> resultatGroupWindows;
+    private List<GroupementResultatWindowService> resultatGroupWindowServices;
+
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        resultat = new Resultat();
+        resultatGroupWebs = new List<List<ResultatWeb>>();
+        resultatGroupWebServices = new List<GroupementResultatWebService>();
+
+        resultatGroupWindows = new List<List<ResultatWindow>>();
+        resultatGroupWindowServices = new List<GroupementResultatWindowService>();
+        CollecterResultat(Id);
+        GroupByDonnees();
+    }
+
+    async Task OnRowExpandWeb(RowData<GroupementResultatWebService> rowData)
+    {
+        if (rowData.Data.ResultatWebs != null)
+        {
+            return;
+        }
+    }
+
+    async Task OnRowExpandWindow(RowData<GroupementResultatWindowService> rowData)
+    {
+        if (rowData.Data.ResultatWindows != null)
+        {
+            return;
+        }
+    }
+
+    public async void CollecterResultat(int id)
+    {
+        resultat = await resultatService.getResultat(id);
+    }
+
+    public void GroupByDonnees()
+    {
+    //GroupementResultatWebService groupementResultatWebService = new GroupementResultatWebService(resultat.ResultatWebs);
+        resultatGroupWebs = resultat.ResultatWebs
+            .GroupBy(rw => rw.Titre)
+            .Select(rw => rw.ToList())
+            .ToList();
+
+        resultatGroupWindows = resultat.ResultatWindows
+            .GroupBy(rw => rw.App)
+            .Select(rw => rw.ToList())
+            .ToList();
+
+        foreach (List<ResultatWeb> webs in resultatGroupWebs)
+        {
+            resultatGroupWebServices.Add(new GroupementResultatWebService(webs));
+        }
+
+        foreach (List<ResultatWindow> windows in resultatGroupWindows)
+        {
+            resultatGroupWindowServices.Add(new GroupementResultatWindowService(windows));
+        }
+    }
+
+    public string SetStyleDesReglesWebActivees(string titre)
+    {
+        var dict = new Dictionary<string, object>();
+
+        var regletestee = resultat.ResultatWebs.Where(r => r.Titre == titre).FirstOrDefault();
+
+        var webRegles = regleService.getReglesWebActives().Result;
+        if (webRegles.Count > 0)
+        {
+            foreach (Regle regle in webRegles)
+            {
+                if (AnalyseService.IsMatching(regletestee.Titre, regle.Paterne))
+                {
+                    return "background-color: red";
+                }
+            }
+            return "background-color: white";
+        }
+        return "";
+    }
+
+    // public Dictionary<string, object> SetStyleDesReglesWebActivees(string titre)
+    // {
+    //     var dict = new Dictionary<string, object>();
+    //     
+    //     var regletestee = resultat.ResultatWebs.Where(r => r.Titre == titre).FirstOrDefault();
+    //     
+    //     var webRegles = regleService.getReglesWebActives().Result;
+    //     if(webRegles.Count > 0)
+    //     {
+    //         foreach (Regle regle in webRegles)
+    //         {
+    //             if(AnalyseService.IsMatching(regletestee.Titre, regle.Paterne))
+    //             {
+    //                 dict.Add("background-color", "red");
+    //             }
+    //         }
+    //         dict.Add("background-color", "white");
+    //     }
+    //     return dict;
+    // }
+    //
+    // public Dictionary<string, object> SetStyleDesReglesWindowActivees(string app )
+    // {
+    //     var dict = new Dictionary<string, object>();
+    //     var regletestee = resultat.ResultatWindows.Where(r => r.App == app).FirstOrDefault();
+    //     var windowRegles = regleService.getReglesWindowActives().Result;
+    //     if(windowRegles.Count > 0)
+    //     {
+    //         foreach (Regle regle in windowRegles)
+    //         {
+    //             if(AnalyseService.IsMatching(regletestee.App, regle.Paterne))
+    //             {
+    //                 dict.Add("background-color", "blue");
+    //             }
+    //         }
+    //         dict.Add("background-color", "white");
+    //     }
+    //     return dict;
+    // }
+
+
+}

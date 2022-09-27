@@ -1,0 +1,208 @@
+﻿@page "/Regles"
+
+@using System.ComponentModel.Design.Serialization
+@using System.Net.Mime
+@inject IRegleService regleService;
+@inject NavigationManager navigationManager
+
+<h3>Règles</h3>
+<div>
+    <div style="display: flex">
+        <Input Placeholder="Nom de la nouvelle règle" @bind-Value="@nouveauNom" width="20%"/>
+        <Input Placeholder="Commentaire" @bind-Value="@nouveauCommentaire" width="20%"/>
+        <select @bind="typeEnum" width="20%" >
+            @foreach (var type in Enum.GetValues(typeof(EnumTypeRegle)))
+            {
+                <option value="@type">@type</option>
+            }
+
+        </select>
+        <select @bind="utilisationEnum" width="20%">
+            @foreach (var utilisation in Enum.GetValues(typeof(EnumUtilisationRegle)))
+            {
+                <option value="@utilisation">@utilisation</option>
+            }
+
+        </select>
+        <Button OnClick="addRow" Type="primary" Style="width: 15%">
+            Ajout d'une règle
+        </Button>
+    </div>
+
+    <Table DataSource="regles" RowClassName="@(_ => "editable-row")" Bordered Loading="loading">
+        <PropertyColumn Width="15%" Property="c => c.Nom"
+                        Sortable
+                        Filterable>
+            @if (editId == context.Id)
+            {
+                <Input Type="text" @bind-Value="context.Nom" OnBlur="stopEdit"/>
+            }
+            else
+            {
+                <div class="editable-cell-value-wrap" style="padding-right:24px" @onclick="() => startEdit(context.Id)">
+                    @context.Nom
+                </div>
+            }
+        </PropertyColumn>
+        <PropertyColumn Width="30%" Property="c => c.Commentaire">
+            @if (editId == context.Id)
+            {
+                <Input Type="text" @bind-Value="context.Commentaire" OnBlur="stopEdit"/>
+            }
+            else
+            {
+                <div class="editable-cell-value-wrap" style="padding-right:24px" @onclick="() => startEdit(context.Id)">
+                    @context.Commentaire
+                </div>
+            }
+        </PropertyColumn>
+        <PropertyColumn Property="c => c.Paterne" Width="30%"></PropertyColumn>
+        <PropertyColumn Property="c => c.TypeRegle"
+                        Sortable
+                        Filterable>
+            <select @bind="context.TypeRegle" >
+                @foreach (var type in Enum.GetValues(typeof(EnumTypeRegle)))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+        </PropertyColumn>
+        <PropertyColumn Property="c => c.UtilisationRegle"
+                        Sortable
+                        Filterable>
+            <select @bind="context.UtilisationRegle">
+                @foreach (var utilisation in Enum.GetValues(typeof(EnumUtilisationRegle)))
+                {
+                    <option value="@utilisation">@utilisation</option>
+                }
+            </select>
+        </PropertyColumn>
+        <ActionColumn Title="Action">
+            <Popconfirm Title="Êtes-vous sûr de vouloir supprimer cette règle ?" 
+                        OnConfirm="() => deleteRow(context.Id)"
+                        OkText="Oui"
+                        CancelText="Non">
+                <a>Supprimer</a>
+            </Popconfirm>
+            <Button OnClick="() => actualiserRegle(context.Id)" Type="primary" Style="">
+                Actualiser
+            </Button>
+            
+        </ActionColumn>
+    </Table>
+</div>
+
+<style>
+  .editable-cell {
+      position: relative;
+  }
+
+  .editable-cell-value-wrap {
+      padding: 5px 12px;
+      cursor: pointer;
+  }
+
+  .editable-row:hover .editable-cell-value-wrap {
+      padding: 4px 11px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+  }
+
+  [data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+      border: 1px solid #434343;
+  }
+</style>
+
+@code {
+
+    private int editId;
+    private bool loading;
+
+    private EnumTypeRegle typeEnum;
+    private EnumUtilisationRegle utilisationEnum;
+
+
+    private List<Regle> regles;
+    private string nouveauNom;
+    private string nouveauCommentaire;
+    
+
+    protected override void OnInitialized()
+    {
+        
+        regles = new List<Regle>();
+
+        CollecterRegles();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        typeEnum = EnumTypeRegle.Application;
+        utilisationEnum = EnumUtilisationRegle.Neutre;
+        StateHasChanged();
+    }
+
+
+    private async void CollecterRegles()
+    {
+        loading = true;
+        regles = await regleService.getRegles();
+        loading = false;
+    }
+
+    private void actualiserRegle(int id)
+    {
+        loading = true;
+        var editedData = regles.FirstOrDefault(x => x.Id == id);
+
+
+        regleService.putRegle(editedData);
+        loading = false;
+    }
+
+    private async Task addRow()
+    {
+        if(nouveauCommentaire != null && nouveauNom != null)
+        {
+            Regle nouvelleRegle = new Regle();
+            nouvelleRegle.Nom = nouveauNom.Trim().ToLower();
+            nouvelleRegle.Commentaire = nouveauCommentaire;
+            nouvelleRegle.Paterne = CreateurRegleService.createRegexSensitive(nouvelleRegle.Nom);
+            nouvelleRegle.TypeRegle = typeEnum;
+            nouvelleRegle.UtilisationRegle = utilisationEnum;
+
+            await regleService.postRegle(nouvelleRegle);
+            CollecterRegles();
+            nouveauNom = "";
+            nouveauCommentaire = "";
+            StateHasChanged();
+        }
+       
+    }
+
+    private async void deleteRow(int id)
+    {
+        await regleService.deleteRegle(id);
+        CollecterRegles();
+        StateHasChanged();
+    }
+
+   
+
+    private void startEdit(int id)
+    {
+        editId = id;
+    }
+
+    private void stopEdit()
+    {
+        loading = true;
+        var editedData = regles.FirstOrDefault(x => x.Id == editId);
+        editedData.Paterne = CreateurRegleService.createRegexSensitive(editedData.Nom);
+        regleService.putRegle(editedData);
+        editId = 0;
+        loading = false;
+        StateHasChanged();
+    }
+
+}

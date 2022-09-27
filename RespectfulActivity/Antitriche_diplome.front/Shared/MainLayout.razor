@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>RespectfulActivity</PageTitle>
+<Layout Class="layout">
+    <Header>
+        
+        <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Horizontal" DefaultSelectedKeys=@(new[]{"2"})>
+            <MenuItem Key="1" RouterLink="/Regles" RouterMatch="NavLinkMatch.All" >Règles</MenuItem>
+            <MenuItem Key="2" RouterLink="/resultat" RouterMatch="NavLinkMatch.All">Liste de tous les résultats</MenuItem>
+            
+        </Menu>
+        
+    </Header>
+    <Content Style="padding: 0 50px;">
+        @* <Breadcrumb Style="margin: 16px 0;"> *@
+        @*     <BreadcrumbItem>Home</BreadcrumbItem> *@
+        @*     <BreadcrumbItem>List</BreadcrumbItem> *@
+        @*     <BreadcrumbItem>App</BreadcrumbItem> *@
+        @* </Breadcrumb> *@
+        <div class="site-layout-content">@Body</div>
+    </Content>
+    <Footer Style="text-align: center; ">RespectfulActivity 2022</Footer>
+</Layout>
+<style>
+    h1{
+    color: #fff;
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1.2;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        text-transform: uppercase;
+    }
+</style>

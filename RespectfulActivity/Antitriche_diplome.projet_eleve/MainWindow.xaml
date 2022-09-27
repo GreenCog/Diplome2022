@@ -1,0 +1,32 @@
+﻿<Window x:Class="Antitriche_diplome.projet_eleve.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Antitriche_diplome.projet_eleve"
+        mc:Ignorable="d"
+        Title="RespectfulActivity " Height="225" Width="689"  ResizeMode="NoResize"   WindowStyle="ToolWindow"  >
+    <Window.Style>
+        <Style/>
+    </Window.Style>
+    <Grid Margin="111,209,0,0">
+        <TextBox x:Name="txtPrenom" HorizontalAlignment="Left" Margin="183,-165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextAlignment="Center" />
+        <TextBox x:Name="txtNom" HorizontalAlignment="Left" Margin="426,-165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextAlignment="Center"/>
+        <TextBox x:Name="txtClasse" HorizontalAlignment="Left" Margin="191,-118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" TextAlignment="Center"/>
+        <TextBox x:Name="txtTest" HorizontalAlignment="Left" Margin="426,-118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" TextAlignment="Center"/>
+        <Button x:Name="btnDemarreStop" Content="Démarrer" HorizontalAlignment="Left" Margin="-36,-160,0,0" VerticalAlignment="Top" Height="109" Width="120" Click="btnDemarreStop_Click"/>
+        <TextBox x:Name="txtHeureDebut" HorizontalAlignment="Left" Margin="183,-72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextAlignment="Center" IsEnabled="False"/>
+        <TextBox x:Name="txtHeureFin" HorizontalAlignment="Left" Margin="426,-72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextAlignment="Center" IsEnabled="False"/>
+        <Label x:Name="lblPrenom" Content="Prénom :" HorizontalAlignment="Left" Margin="126,-169,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblNom" Content="Nom :" HorizontalAlignment="Left" Margin="384,-169,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblClasse" Content="Classe :" HorizontalAlignment="Left" Margin="142,-122,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblHeureDebut" Content="Heure Début :" HorizontalAlignment="Left" Margin="99,-76,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblHeureFin" Content="Heure fin :" HorizontalAlignment="Left" Margin="362,-76,0,0" VerticalAlignment="Top"/>
+        
+        <Label x:Name="lblTest" Content="Test :" HorizontalAlignment="Left" Margin="390,-122,0,0" VerticalAlignment="Top"/>
+        
+
+
+
+    </Grid>
+</Window>

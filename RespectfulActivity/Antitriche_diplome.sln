@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antitriche_diplome.back", "Antitriche_diplome.back\Antitriche_diplome.back.csproj", "{F7C44586-DBC8-48A8-85BE-1498A2462E99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antitriche_diplome.models", "Antitriche_diplome.models\Antitriche_diplome.models.csproj", "{533EF7B2-2A94-4FBC-9828-8095F23A5871}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antitriche_diplome.projet_eleve", "Antitriche_diplome.projet_eleve\Antitriche_diplome.projet_eleve.csproj", "{A98CF859-4C5C-4E96-AF67-F2C213F2A835}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antitriche_diplome.front", "Antitriche_diplome.front\Antitriche_diplome.front.csproj", "{219FE498-F26C-4766-B6AF-5134CB552D18}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupRespectfulActivity", "SetupRespectfulActivity\SetupRespectfulActivity.vdproj", "{477802FB-486C-4FE3-A54E-ACC7AB81C925}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7C44586-DBC8-48A8-85BE-1498A2462E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C44586-DBC8-48A8-85BE-1498A2462E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C44586-DBC8-48A8-85BE-1498A2462E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C44586-DBC8-48A8-85BE-1498A2462E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{533EF7B2-2A94-4FBC-9828-8095F23A5871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533EF7B2-2A94-4FBC-9828-8095F23A5871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533EF7B2-2A94-4FBC-9828-8095F23A5871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533EF7B2-2A94-4FBC-9828-8095F23A5871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A98CF859-4C5C-4E96-AF67-F2C213F2A835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A98CF859-4C5C-4E96-AF67-F2C213F2A835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A98CF859-4C5C-4E96-AF67-F2C213F2A835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A98CF859-4C5C-4E96-AF67-F2C213F2A835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{219FE498-F26C-4766-B6AF-5134CB552D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{219FE498-F26C-4766-B6AF-5134CB552D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{219FE498-F26C-4766-B6AF-5134CB552D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{219FE498-F26C-4766-B6AF-5134CB552D18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{477802FB-486C-4FE3-A54E-ACC7AB81C925}.Debug|Any CPU.ActiveCfg = Debug
+		{477802FB-486C-4FE3-A54E-ACC7AB81C925}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4745F223-AB85-4D08-9E9F-2D39D0EC818B}
+	EndGlobalSection
+EndGlobal

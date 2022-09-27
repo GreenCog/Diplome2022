@@ -1,0 +1,72 @@
+﻿@page "/resultat"
+@using AntDesign.TableModels
+@using System.Text.Json
+@using JsonSerializer = Newtonsoft.Json.JsonSerializer
+@using System.Net.Security
+@using Antitriche_diplome.front.Service
+@inject NavigationManager navigationManager
+
+@inject IResultatService resultatService;
+<h3>ListeResultat</h3>
+
+<Table DataSource="resultatDtos" TItem="ResultatDTO" OnRowClick="@AfficherDetail" Loading="loading" >
+    <PropertyColumn Property="r => r.Id"
+                    Sortable
+                    Filterable/>
+
+    <PropertyColumn Property="r => r.NomEleve"
+                    
+                    SorterCompare="@((a, b) => string.Compare(a, b))"
+                    SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending  }"
+                    Filterable/>
+
+    <PropertyColumn Property="c => c.PrenomEleve"
+                    SorterCompare="@((a, b) => string.Compare(a, b))"
+                    SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending }"
+                    Filterable/>
+
+    <PropertyColumn Property="c => c.Date"
+                    Format="yyyy/MM/dd"
+                    Sortable
+                    Filterable/>
+
+    <PropertyColumn Property="c => c.Classe"
+                    Sortable
+                    Filterable/>
+
+    <PropertyColumn Property="c => c.Test"
+                    Sortable
+                    Filterable/>
+
+    
+</Table>
+
+@code {
+    private bool loading;
+    private List<ResultatDTO> resultatDtos;
+
+    protected override void OnInitialized()
+    {
+        resultatDtos = new List<ResultatDTO>();
+        
+        CollecterTousResultats();
+    }
+
+    private async void CollecterTousResultats()
+    {
+        loading = true;
+        resultatDtos = await resultatService.getResultats();
+        loading = false;
+    }
+
+
+
+    public void AfficherDetail(RowData<ResultatDTO> resultat)
+    {
+        loading = true;
+        navigationManager.NavigateTo($"resultat/{resultat.Data.Id}");
+    }
+
+    
+
+}

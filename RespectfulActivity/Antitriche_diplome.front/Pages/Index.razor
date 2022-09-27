@@ -1,0 +1,19 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+
+<PageTitle>Index</PageTitle>
+
+@code
+{
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Navigation.NavigateTo("/resultat", true);
+    }
+
+    protected override void OnInitialized()
+    {
+        
+    }
+}
+
